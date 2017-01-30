@@ -149,7 +149,7 @@ class DataFrame(object):
         else:
             raise Exception('incorrect number of rows')
 
-df = DataFrame.from_csv('SalesJan2009.csv')
+# df = DataFrame.from_csv('SalesJan2009.csv')
 
 
 # ============test task 3============
@@ -168,19 +168,19 @@ df = DataFrame.from_csv('SalesJan2009.csv')
 # test = df.min('Product')
 
 # ============test task 4============
-new_lol = [['1/3/09 6:17','Product1','1200','Mastercard','carolina',
-    'Basildon','England','United Kingdom','1/2/09 6:00','1/2/09 6:08','51.5','-1.1166667'],
-    ['1/3/09 6:17','Product1','1200','Mastercard','carolina',
-    'Basildon','England','United Kingdom','1/2/09 6:00','1/2/09 6:08','51.5','-1.1166667']]
-df = df.add_rows(new_lol)
+# new_lol = [['1/3/09 6:17','Product1','1200','Mastercard','carolina',
+#     'Basildon','England','United Kingdom','1/2/09 6:00','1/2/09 6:08','51.5','-1.1166667'],
+#     ['1/3/09 6:17','Product1','1200','Mastercard','carolina',
+#     'Basildon','England','United Kingdom','1/2/09 6:00','1/2/09 6:08','51.5','-1.1166667']]
+# df = df.add_rows(new_lol)
 
-test = df.mean('Last_Login')
+# test = df.mean('Last_Login')
 
 # ============test task 5============
-new_col = df[:,:3]
-df = df.add_columns(new_col)
+# new_col = df[:,:3]
+# df = df.add_columns(new_col)
 
-test = df.mean('column15') # calculate the mean of new added 'column15'
+# test = df.mean('column15') # calculate the mean of new added 'column15'
 
-print('finished')
+# print('finished')
 
