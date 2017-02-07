@@ -6,7 +6,7 @@ import datetime,time
 class DataFrame(object):
     @classmethod
     def from_csv(cls,path):
-        with open(path) as f:
+        with open(path,'rU') as f:
             reader =csv.reader(f,delimiter=',',quotechar='"')
             data = []
             for row in reader:
