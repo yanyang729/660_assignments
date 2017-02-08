@@ -139,11 +139,10 @@ class DataFrame(object):
             raise Exception('incorrect number of columns')
 
     # ============task 5============
-    def add_columns(self,list_of_values):
+    def add_columns(self,list_of_values，columnn_name):
         if len(list_of_values)==len(self.data):
-            added_headers = ['column'+str(len(self.header)+i+1) for i in range(len(list_of_values[0]))]
-            self.header = self.header + added_headers
-            self.data = [OrderedDict(zip(list(old_row.keys()) + added_headers,list(old_row.values()) + added_values))
+            self.header = self.header + column_name
+            self.data = [OrderedDict(zip(list(old_row.keys()) + column_name,list(old_row.values()) + added_values))
                          for old_row, added_values in zip(self.data, list_of_values)]
             return self
         else:
