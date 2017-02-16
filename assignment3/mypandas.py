@@ -2,7 +2,7 @@ from collections import OrderedDict
 import csv
 from dateutil.parser import parse
 import datetime,time
-
+import copy
 
 class DataFrame(object):
     @classmethod
@@ -23,6 +23,7 @@ class DataFrame(object):
         else:
             self.header = ['column' + str(i+1) for i in range(len(list_of_lists[0]))]
             self.data = list_of_lists
+
 
         # =============change str values to appropriate data type=================
         def data_prep(row):
@@ -169,13 +170,15 @@ class DataFrame(object):
     def sort_by(self,col_name, reverse):
         if isinstance(col_name,str):
             self.data = sorted(self.data,key= lambda x:x[col_name],reverse=reverse)
+
         elif isinstance(col_name,list):
             # reverse the list to realize hierarchical sort
             for i,col in enumerate(col_name[::-1]):
                 self.data = sorted(self.data, key=lambda x:x[col], reverse=reverse[i])
+            return self.data
         else:
             raise Exception('type error')
-        return self
+        return self.data
 
     # ===========task 3============
     def group_by(self,col_group,col_agg,agg_func):
@@ -201,38 +204,39 @@ class DataFrame(object):
         else:
             raise Exception('other cases ')
 
-# ===========task 2 part2============
-class Series(object):
-    def __init__(self,list_of_values):
-        self.data = list_of_values
+    # create a copy used for testing
+    def copy(self):
+        return copy.deepcopy(self)
 
+# ===========task 2 part2============
+class Series(list):
     def __eq__(self, other):
         ret_list = []
-        for item in self.data:
+        for item in self:
             ret_list.append(item==other)
         return ret_list
 
     def __lt__(self, other):
         ret_list = []
-        for item in self.data:
+        for item in self:
             ret_list.append(item < other)
         return ret_list
 
     def __gt__(self, other):
         ret_list = []
-        for item in self.data:
+        for item in self:
             ret_list.append(item > other)
         return ret_list
 
     def __ge__(self, other):
         ret_list = []
-        for item in self.data:
+        for item in self:
             ret_list.append(item >= other)
         return ret_list
 
     def __le__(self, other):
         ret_list = []
-        for item in self.data:
+        for item in self:
             ret_list.append(item <= other)
         return ret_list
 
@@ -242,31 +246,24 @@ def avg(list_of_values):
 def mymin(list_of_values):
     return min(list_of_values)
 
+
 # df = DataFrame.from_csv('SalesJan2009.csv')
-#
-# # =========test task1=========
-# df = df.sort_by('Price',reverse=True)
-# df = df.sort_by('Price',reverse=False)
-# df = df.sort_by('Transaction_date',reverse=True)
-# df = df.sort_by('Product',reverse=True)
-#
-# df = df.sort_by(['Product','Price','Transaction_date'],reverse=[True,True,True])
-#
-#
-# # =========test task2==========
-# df = df[df['Payment_Type'] == 'Visa']
-# df = DataFrame.from_csv('SalesJan2009.csv')
-# df = df[df['Price'] > 1400]
-# df = DataFrame.from_csv('SalesJan2009.csv')
-# df = df[df['Transaction_date'] >= datetime.datetime(2009, 1, 30, 18, 9)]
-#
-# # =========test task3==========
-# df = df.group_by('Payment_Type', 'Price', avg)
-# df = DataFrame.from_csv('SalesJan2009.csv')
-# df = df.group_by('Product', 'Price', avg)
-# df = DataFrame.from_csv('SalesJan2009.csv')
-# df = df.group_by(['Product','Payment_Type'],['Price', 'Latitude'],[avg,avg])
-# df = DataFrame.from_csv('SalesJan2009.csv')
-# df = df.group_by(['Product','Payment_Type','Country'],['Price','Latitude','Longitude'],[avg,mymin,mymin])
+# df_test = df.copy()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

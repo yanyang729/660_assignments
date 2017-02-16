@@ -148,7 +148,7 @@ class DataFrame(object):
         else:
             raise Exception('incorrect number of rows')
 
-# df = DataFrame.from_csv('SalesJan2009.csv')
+df = DataFrame.from_csv('SalesJan2009.csv')
 
 
 # ============test task 3============
