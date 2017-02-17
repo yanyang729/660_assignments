@@ -174,11 +174,11 @@ class DataFrame(object):
         elif isinstance(col_name,list):
             # reverse the list to realize hierarchical sort
             for i,col in enumerate(col_name[::-1]):
-                self.data = sorted(self.data, key=lambda x:x[col], reverse=reverse[i])
-            return self.data
+                self.data = sorted(self.data, key=lambda x:x[col], reverse=reverse[len(col_name)-1-i])
+            return self
         else:
             raise Exception('type error')
-        return self.data
+        return self
 
     # ===========task 3============
     def group_by(self,col_group,col_agg,agg_func):
@@ -208,35 +208,39 @@ class DataFrame(object):
     def copy(self):
         return copy.deepcopy(self)
 
+
 # ===========task 2 part2============
-class Series(list):
+class Series(object):
+    def __init__(self, list_of_values):
+        self.data = list_of_values
+
     def __eq__(self, other):
         ret_list = []
-        for item in self:
+        for item in self.data:
             ret_list.append(item==other)
         return ret_list
 
     def __lt__(self, other):
         ret_list = []
-        for item in self:
+        for item in self.data:
             ret_list.append(item < other)
         return ret_list
 
     def __gt__(self, other):
         ret_list = []
-        for item in self:
+        for item in self.data:
             ret_list.append(item > other)
         return ret_list
 
     def __ge__(self, other):
         ret_list = []
-        for item in self:
+        for item in self.data:
             ret_list.append(item >= other)
         return ret_list
 
     def __le__(self, other):
         ret_list = []
-        for item in self:
+        for item in self.data:
             ret_list.append(item <= other)
         return ret_list
 
@@ -247,9 +251,10 @@ def mymin(list_of_values):
     return min(list_of_values)
 
 
-# df = DataFrame.from_csv('SalesJan2009.csv')
-# df_test = df.copy()
-
+if __name__ == '__main__':
+    # if i want to test, without changing original
+    df = DataFrame.from_csv('SalesJan2009.csv')
+    test = df.copy()
 
 
 
