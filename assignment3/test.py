@@ -37,4 +37,7 @@ df1 = df.copy()
 df1 = df1.group_by('Payment_Type', 'Price', avg)
 
 df2 = df.copy()
-df2 = df3.group_by(['Product','Payment_Type'],['Price', 'Latitude'],[avg,avg])
+df2 = df2.group_by(['City', 'Payment_Type'], 'Price', avg)
+
+
+2

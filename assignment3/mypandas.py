@@ -85,7 +85,14 @@ class DataFrame(object):
         elif isinstance(item,list):
             # ===========task 2 part1============
             if isinstance(item[0],str):
-                return [OrderedDict(zip(item,[ value for key ,value in row.items() if key in item])) for row in self.data]
+                list_of_dict =[]
+                for row in self.data:
+                    row_dict =[]
+                    for i in item:
+                        row_dict.append((i,row[i]))
+                    list_of_dict.append(OrderedDict(row_dict))
+                return list_of_dict
+                    # return[OrderedDict([ (key,value) for key ,value in row.items() if key in item]) for row in self.data]
             elif isinstance(item[0],bool):
                 return [row for is_needed,row in zip(item,self.data) if is_needed== True]
             else:
@@ -183,31 +190,31 @@ class DataFrame(object):
     # ===========task 3============
     def group_by(self,col_group,col_agg,agg_func):
         ret_list = []
-        if isinstance(col_agg,str) and isinstance(col_agg,str):
+        if isinstance(col_group,str) and isinstance(col_agg,str):
             ret_list.append([col_group,col_agg])
             for group_value in set(self[col_group].data): # loop each group
                 group = self[self[col_group] == group_value] # get the group, every group has same group_value
                 agged = agg_func([row[col_agg] for row in group]) # aggregate col_agg column
                 ret_list.append([group_value,agged])
             return DataFrame(ret_list,header=True)
-        elif isinstance(col_group,list) and isinstance(col_agg,list):
-            ret_list.append(col_group + col_agg)
+
+        elif isinstance(col_group,list) and isinstance(col_agg,str):
+            ret_list.append(col_group + [col_agg])
             unique_combo = [list(x) for x in set(tuple(y.values()) for y in self[col_group])]
             for line in unique_combo:
                 bool_index = [True] * len(self.data) # default
                 for i in range(len(col_group)):
                     bool_index = bool_index and (self[col_group[i]] == line[i])
                 group = self[bool_index]
-                agged = [agg_func[i]([row[one_col] for row in group]) for i,one_col in enumerate(col_agg)]
-                ret_list.append(line+agged)
-            return  DataFrame(ret_list,header=True)
+                agged = agg_func([row[col_agg] for row in group])
+                ret_list.append(line+[agged])
+            return DataFrame(ret_list,header=True)
         else:
             raise Exception('other cases ')
 
     # create a copy used for testing
     def copy(self):
         return copy.deepcopy(self)
-
 
 # ===========task 2 part2============
 class Series(object):
@@ -252,11 +259,8 @@ def mymin(list_of_values):
 
 
 if __name__ == '__main__':
-    # if i want to test, without changing original
     df = DataFrame.from_csv('SalesJan2009.csv')
     test = df.copy()
-
-
 
 
 
