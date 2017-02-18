@@ -254,9 +254,6 @@ class Series(object):
 def avg(list_of_values):
     return sum(list_of_values)/float(len(list_of_values))
 
-def mymin(list_of_values):
-    return min(list_of_values)
-
 
 if __name__ == '__main__':
     df = DataFrame.from_csv('SalesJan2009.csv')
