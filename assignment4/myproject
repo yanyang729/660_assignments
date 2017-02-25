@@ -1,0 +1,9 @@
+server {
+    listen 41953;
+    server_name 52.32.22.121;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass unix:/home/ubuntu/myproject.sock;
+    }
+}
