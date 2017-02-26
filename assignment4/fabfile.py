@@ -1,8 +1,9 @@
 from fabric.api import *
 
-env.hosts=["ec2-52-32-22-121.us-west-2.compute.amazonaws.com"]
+# NEED TO BE CHANGED!!!!!!!!!!!!!!
+env.hosts=["ec2-52-41-107-14.us-west-2.compute.amazonaws.com"]
 env.user="ubuntu"
-env.key_filename=['/home/yang/YyProj/660_assignments/assignment4/chatbot.pem']
+env.key_filename=['/home/yang/Desktop/chatbot.pem']
 YOUR_NAME_HERE='Yang'
 
 def test_local():
@@ -30,7 +31,6 @@ def setup_ec2():
 
         with open('myproject.py', 'r+') as infile:
             contents = infile.read()
-            contents = contents.replace('STUDENT_NAME_HERE', YOUR_NAME_HERE)
             infile.seek(0)
             infile.truncate()
             infile.write(contents)
@@ -83,7 +83,8 @@ def setup_ec2():
             else:
                 print '\n\nTHERE WAS A PROBLEM WITH THE CHATBOT ENV'
 
-        sudo('service myproject start')
+        sudo('service myproject restart')
+        sudo('systemctl daemon-reload')
         sudo('service nginx restart')
         print '\n\n\n\n\n\n\n\n OPEN THIS ADDRESS IN YOUR BROWSER: {}:41953\n\n\n\n'.format(server_is_at)
 
