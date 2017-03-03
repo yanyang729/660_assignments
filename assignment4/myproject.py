@@ -3,6 +3,8 @@ import requests
 from flask import Flask, request, Response
 import re
 from mykeys import *
+import random
+import time
 
 application = Flask(__name__)
 slack_inbound_url = 'https://hooks.slack.com/services/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'
@@ -147,6 +149,7 @@ def log_request_info():
 
 @application.route('/slack', methods=['POST'])
 def inbound():
+    time.sleep(random.uniform(0,10))
     channel = request.form['channel_name']
     username = request.form['user_name']
     text = request.form['text']
