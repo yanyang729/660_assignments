@@ -31,7 +31,7 @@ The following is my concerns of which algorithm to chose:
 - Isolation Forest works in high dimension, which is not in this case.
 - 'One-class SVM gives useful results when we don't have assumptions on the distribution' Maybe we should use this!
 **So I chose One-class SVM**. But, just some naive thoughts, tell me if I was wrong.
-By choosing 2 typical case and subploting different parameter combinations I will take para '''kernel = sigmoid, nu =0.08''' and set others as default
+By choosing 2 typical case and subploting different parameter combinations I will take para '''kernel = sigmoid, nu =0.1''' and set others as default
 
 ### Task 4
 

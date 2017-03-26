@@ -308,7 +308,7 @@ def task_3_ec(flight_data):
     df.Date_of_Flight = df.Date_of_Flight.apply(lambda x: (parse(x.split('-')[0].strip())- parse(df.Date_of_Flight[0].split('-')[0].strip())).days+1)
 
     X = StandardScaler().fit_transform(df[['Date_of_Flight', 'Price']])
-    svm = OneClassSVM(kernel='sigmoid',nu=0.08).fit(X)
+    svm = OneClassSVM(kernel='sigmoid',nu=0.1).fit(X)
 
     labels = svm.predict(X)
     clusters = len(set(labels))
