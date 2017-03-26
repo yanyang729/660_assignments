@@ -1,21 +1,3 @@
-<style TYPE="text/css">
-code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}
-</style>
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry
-    }
-});
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i = 0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-});
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
 README
 ---
@@ -44,7 +26,7 @@ This method performs bad. Almost can't find good price.
 
 [**Novelty and Outlier Detection**](http://scikit-learn.org/stable/modules/outlier_detection.html)
 
-The following is my concerns of which algorithm to chose, all refered from the [Novelty and Outlier Detection document](http://scikit-learn.org/stable/modules/outlier_detection.html) 
+The following is my concerns of which algorithm to chose:
 - Based on observing, the date we have is not unimodal, there should be mulitple cluster in one graph. Robust covariance seem to work well in unimodal.
 - Isolation Forest works in high dimension, which is not in this case.
 - 'One-class SVM gives useful results when we don't have assumptions on the distribution' Maybe we should use this!
