@@ -43,6 +43,7 @@ This method performs bad. Almost can't find good price.
 **Part 3:**
 
 [**Novelty and Outlier Detection**](http://scikit-learn.org/stable/modules/outlier_detection.html)
+
 The following is my concerns of which algorithm to chose, all refered from the [Novelty and Outlier Detection document](http://scikit-learn.org/stable/modules/outlier_detection.html) 
 - Based on observing, the date we have is not unimodal, there should be mulitple cluster in one graph. Robust covariance seem to work well in unimodal.
 - Isolation Forest works in high dimension, which is not in this case.
@@ -52,5 +53,5 @@ By choosing 2 typical case and subploting different parameter combinations I wil
 
 ### Task 4
 
-For better performance we need to scale the X dimension so that DBSCAN will generate priod of continuous days $\sqrt{ x ^2 + 20 ^2 } <  2x $ ,$x \gt \sqrt{ \frac{20^2}{3}}$ and then set a littler bigger x.
+For better performance we need to scale the X dimension so that DBSCAN will generate priod of continuous days based on formula: $\sqrt{ x ^2 + 20 ^2 } <  2x $ ,$x \gt \sqrt{ \frac{20^2}{3}}$ and then set a littler bigger x.
 
