@@ -215,7 +215,7 @@ def task_3_dbscan(flight_data):
     :param flight_data: a datefrome
     :return: a dateframe
     """
-    df = flight_data
+    df = flight_data.copy()
     start_date = parse(df.Date_of_Flight[0].split('-')[0].strip())
     df.Date_of_Flight = df.Date_of_Flight.apply(lambda x: (parse(x.split('-')[0].strip())- parse(df.Date_of_Flight[0].split('-')[0].strip())).days+1)
 
@@ -241,42 +241,37 @@ def task_3_dbscan(flight_data):
 
     df['dbscan_labels'] = db.labels_
 
-    # find closest cluster
-    df_encoded = pd.DataFrame(np.concatenate((X,db.labels_.reshape(-1,1)),axis=1))
-    df_encoded.columns = ['Date_of_Flight','Price','dbscan_labels']
-    df_encoded.head(5)
-    df_agged = df_encoded.groupby('dbscan_labels')['Date_of_Flight','Price'].agg(['min','mean','count']).copy()
+    good_price_index = []
 
-    lowest_in_outliers = (df_encoded.Date_of_Flight[df_encoded.Price == df_agged.Price.iloc[0,0]].values[0],
-                          df_agged.Price.iloc[0,0])
+    df_encoded = pd.DataFrame(np.concatenate((X, db.labels_.reshape(-1, 1)), axis=1))
+    df_encoded.columns = ['Date_of_Flight', 'Price', 'dbscan_labels']
 
-    x = df_agged.Date_of_Flight.iloc[1:,1].tolist()
-    y = df_agged.Price.iloc[1:,1].tolist()
-    mean_clusters = [(x,y) for x,y in zip(x,y)]
-    min_cluster_index = 0
-    min_dist = 9999
-    for i, mean_point in enumerate(mean_clusters):
-        # seems Mahalanobis distance might be an alternative
-        dist = distance.euclidean(lowest_in_outliers,mean_point)
-        if dist < min_dist:
-            min_dist = dist
-            min_cluster_index = i
+    df_agged = df_encoded.groupby('dbscan_labels')['Date_of_Flight', 'Price'].agg(['min', 'mean', 'count']).copy()
 
-    # threshold of the closest cluster
-    df_closest = df[df.dbscan_labels == min_cluster_index]
-    std = np.std(df_closest.Price)
-    mean = np.mean(df_closest.Price)
+    for index in df_encoded[df_encoded.dbscan_labels == -1].index:
+        min_cluster_index = 0
+        min_dist = 9999
+        outlier_x = df_encoded.loc[index].Date_of_Flight
+        outlier_y = df_encoded.loc[index].Price
+        for i, (cluster_mean_x, cluster_mean_y) in enumerate(
+                zip(df_agged['Date_of_Flight']['mean'][1:], df_agged['Price']['mean'][1:])):
+            dist = distance.euclidean(np.array([outlier_x, outlier_y]), np.array([cluster_mean_x, cluster_mean_y]))
+            if dist < min_dist:
+                min_dist = dist
+                min_cluster_index = i
+        df_closest = df[df.dbscan_labels == min_cluster_index]
+        std = np.std(df_closest.Price)
+        mean = np.mean(df_closest.Price)
 
-    thrhd = max(mean - 2 * std, 50)
-    df_outliers = df[df.dbscan_labels == -1].copy()
-    lowest_outlier = df_outliers[df_outliers.Price == df_outliers.Price.min()]
+        thrhd = max(mean - 2 * std, 50)
 
-    if lowest_outlier.Price.values[0] < thrhd:
-        lowest_outlier.Date_of_Flight = lowest_outlier.Date_of_Flight.apply(lambda x:(start_date+datetime.timedelta(
-            days=x-1)).strftime('%Y-%m-%d'))
-        return lowest_outlier[['Date_of_Flight','Price']].reset_index(drop=True)
+        if df.loc[index].Price < thrhd:
+            good_price_index.append(index)
+
+    if good_price_index :
+        return flight_data.loc[good_price_index]
     else:
-        return 'No good flight price'
+        print 'no good price found'
 
 
 # task #3 part 2
